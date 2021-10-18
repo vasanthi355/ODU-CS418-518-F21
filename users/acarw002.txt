@@ -1,1 +1,1 @@
-https://github.com/carwial/cs518.git
+https://github.com/carwial/cs518
