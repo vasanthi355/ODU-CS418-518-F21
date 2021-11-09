@@ -37,7 +37,7 @@
             @endif
 
             <div>
-                <h1 style="font-size:55px">False Info Survey Webpage</h1>
+                <h1 style="font-size:55px">FalseInfo Survey Webpage</h1>
                 <p> </p>
             </div>
 
