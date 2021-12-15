@@ -3,10 +3,12 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\KeyController;
 use App\Http\Controllers\ArticleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +25,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/projectinfo', function () {
-//     return view('aboutproject');
-// });
+Route::get('/projectinfo', function () {
+    return view('aboutproject');
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function (Request $request) {
     $role = Auth::user()->verified_user;
@@ -52,6 +54,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', \App\Http\Controllers\UsersController::class);
 });
 
+Route::get('/getkeyid', [KeyController::class, 'index']);
+
+Route::get('/key/{keyid}', [KeyController::class, 'keyresults']);
+
 Route::get('/article', [SearchController::class, 'index'])->name('search');
 
 Route::get('/allarticles', [ArticleController::class, 'index']);
@@ -63,6 +69,8 @@ Route::get('/article/{id}/dashboard', [PanelController::class, 'dashboard']);
 Route::get('/article/{id}/snopes', [PanelController::class, 'dashboard']);
 
 Route::get('/article/{id}/survey', [PanelController::class, 'dashboard']);
+
+Route::get('/article/{id}/updatedetails', [PanelController::class, 'surveryDetails']);
 
 Route::get('/policy', function() {
     return view('policy');

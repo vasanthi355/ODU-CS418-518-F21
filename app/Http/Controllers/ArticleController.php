@@ -25,10 +25,11 @@ class ArticleController extends Controller
             ]
         ];
         $results = $client->search($params);
+        $esearch = '';
         // dd($results);
         $count = $results['hits']['total']['value'];
         $response = $results['hits']['hits'];
-        return view('search.sample' ,compact('response','count'));
+        return view('search.sample' ,compact('esearch','response','count'));
     }
 
     /**

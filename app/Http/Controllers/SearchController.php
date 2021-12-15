@@ -18,17 +18,31 @@ class SearchController extends Controller
         $client = ClientBuilder::create()->build();
 
         $search = $request->input('search');
+        $search = strip_tags($search);
+        $esearch = strip_tags($search);
         if($search === '' || Str::length($search) === 0) {
             return redirect()->route('dashboard');
         }
         $params = [
             'index' => 'product',
+            'explain' => true,
             'body'  => [
                 'query' => [
-                    'match' => [
-                        'title' => $search ?? ''
-                    ]
-                ]
+                    'multi_match' => [
+                        'query' => $esearch,
+                        'fuzziness' => 'AUTO',
+                        'fields' => ['title^5', 'descritpion'],
+                    ],
+                    ],
+                    'highlight' => [
+                        "pre_tags" => ["<mark>"],
+                        "post_tags" => ["</mark>"],
+                        "fields" => [
+                            "title" => new \stdClass(),
+                            "description" => new \stdClass()
+                        ],
+                        'require_field_match' => false
+                    ],
             ]
         ];
         $results = $client->search($params);
@@ -36,7 +50,7 @@ class SearchController extends Controller
         // dd($count);
         $response = $results['hits']['hits'];
         // dd($response);
-        return view('search.sample' ,compact('response','count'));
+        return view('search.sample' ,compact('response','count','esearch'));
     }
 
     /**

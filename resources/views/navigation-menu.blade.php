@@ -1,4 +1,7 @@
-<link rel="stylesheet" type="text/css" href="{{ url('/css/app.css') }}" />
+
+<!-- Favicon -->
+<link rel="shortcut icon" type="image/png" sizes="32x32" href="/img/favicon.png">
+<link rel="icon" type="image/x-icon" href="/img/favicon.png"><link rel="stylesheet" type="text/css" href="{{ url('/css/app.css') }}" />
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,8 +44,8 @@
             <form action="{{ route('search') }}" style="margin-left:30%">
                 <div style="margin-left: auto;margin-top: 4%; width: 155%;">
                     <div class="shadow flex">
-                        <input class="w-full rounded p-2" name="search" type="text" placeholder="Search..." value="{{ request('search') }}">
-                        <button style="background-color: #5635ca" class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400" type="submit">
+                        <input class="w-full rounded p-2" name="search" type="text" placeholder="Search..."id="speechToText" onclick="record()" value="{{ request('search') }}">
+                        <button style=" " class="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400" type="submit">
                             <i class="material-icons">search</i>
                             {{-- <a href="{{ route('users.index') }}" class="material-icons">Search</a> --}}
                         </button>
@@ -247,3 +250,16 @@
         </div>
     </div>
 </nav>
+<script>
+    function record() {
+        var recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-GB";
+
+        recognition.onresult = function(event) {
+            // console.log(event);
+            document.getElementById('speechToText').value = event.results[0][0].transcript;
+        }
+        recognition.start();
+
+    }
+</script>

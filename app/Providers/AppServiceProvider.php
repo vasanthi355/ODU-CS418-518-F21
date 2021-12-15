@@ -25,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Schema::defaultstringLength(191);
+        \URL::forceScheme('https');
+        if (!empty(env('NG_URI'))) {
+            $this->app['url']->forceRootUrl(env('NG_URI'));
+        }
+        
     }
 }
